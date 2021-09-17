@@ -17,6 +17,8 @@ namespace ValQ.Core.Domain.Game
 
         public int OriginId { get; set; }
 
+        public int RequiredPointsForUltimateSkill { get; set; }
+
         public DateTime ReleaseDate { get; set; }
 
         public virtual ICollection<Skill> Skills { get; set; }
