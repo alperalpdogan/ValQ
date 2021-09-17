@@ -1,9 +1,10 @@
-﻿using ValQ.Core.Domain.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ValQ.Core.Domain.User;
+using ValQ.Services.DTO;
 
 namespace ValQ.Services.Users
 {
@@ -11,10 +12,6 @@ namespace ValQ.Services.Users
     {
         Task<User> GetUserById(string userId);
 
-        Task<CreateUserResult> CreateUserAsync(User user, string plainPassword);
-
-        Task AddUserToRoleAsync(User existingUser, string roleName);
-
-        Task AuthenticateUserAsync(string eMail, string plainPassword);
+        Task<RegisterResult> RegisterUserAsync(RegisterUserDTO user);
     }
 }

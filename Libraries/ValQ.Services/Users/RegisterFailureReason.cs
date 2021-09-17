@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ValQ.Services.Users
 {
-    public enum CreateUserResult
+    public enum RegisterFailureReason
     {
-        SUCCESSFUL = 1,
-        INVALID_PASSWORD = 2,
-        USER_ALREADY_EXISTS =3
+        USER_EXISTS = 10,
+        INVALID_PASSWORD = 20,
+        INVALID_EMAIL = 30
     }
 }
