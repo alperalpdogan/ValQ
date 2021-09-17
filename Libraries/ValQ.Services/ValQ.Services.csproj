@@ -14,4 +14,8 @@
     <ProjectReference Include="..\ValQ.Data\ValQ.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="QuestionService\" />
+  </ItemGroup>
+
 </Project>

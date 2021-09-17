@@ -16,7 +16,7 @@ namespace ValQ.Services.Users
     {
         private readonly UserManager<User> _userManager;
         private readonly ILogger _logger;
-        private readonly IAuthenticationService _authentiİcationService;
+        private readonly IAuthenticationService _authenticationService;
 
         public UserService(UserManager<User> userManager,
                            ILogger logger,
@@ -54,7 +54,7 @@ namespace ValQ.Services.Users
             if (!createUserResult.Succeeded)
                 await _logger.InsertLogAsync(LogLevel.Error, "Could not create user", string.Concat(createUserResult.Errors.Select(o => o.Description)));
 
-            var authResult = await _authentiİcationService.AuthenticateAsync(user.Email, user.Password);
+            var authResult = await _authenticationService.AuthenticateAsync(user.Email, user.Password);
 
             if (!authResult.Succesful)
                 throw new ValQException("Impossible");

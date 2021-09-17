@@ -29,6 +29,8 @@ namespace ValQ.Data.Context
 
         public DbSet<WeaponDamage> WeaponDamage { get; set; }
 
+        public DbSet<QuestionTemplate> QuestionTemplate { get; set; }
+
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
