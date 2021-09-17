@@ -10,6 +10,6 @@ namespace ValQ.Core.Domain.User
     {
         public const string Admin = "Admin";
 
-        public const string Customer = "Customer";
+        public const string Player = "Player";
     }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ValQ.Core.Domain.Game;
 
 namespace ValQ.Data.Context
 {
@@ -15,7 +16,18 @@ namespace ValQ.Data.Context
     {
         public ValQDbContext(DbContextOptions<ValQDbContext> options) : base(options)
         {
+
         }
+
+        public DbSet<Character> Character { get; set; }
+
+        public DbSet<Weapon> Weapon { get; set; }
+
+        public DbSet<Skill> Skill { get; set; }
+
+        public DbSet<Origin> Origin { get; set; }
+
+        public DbSet<WeaponDamage> WeaponDamage { get; set; }
 
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
