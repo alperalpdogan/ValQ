@@ -10,7 +10,7 @@ namespace ValQ.Core.Domain.Game
     {
         WEAPON = 10,
         CHARACTER =20,
-        SKILLS = 30,
+        SKILL = 30,
         TOURNAMENT = 40,
         LORE = 50
     }

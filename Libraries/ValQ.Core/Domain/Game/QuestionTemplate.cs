@@ -12,5 +12,8 @@ namespace ValQ.Core.Domain.Game
         public string Template { get; set; }
 
         public QuestionType Type { get; set; }
+
+        public int TypeDescriptor { get; set; }
+
     }
 }
