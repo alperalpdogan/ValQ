@@ -12,55 +12,40 @@ using ValQ.Data.Repository;
 using ValQ.Services.DTO;
 using Microsoft.EntityFrameworkCore;
 using ValQ.Services.Localization;
+using ValQ.Services.Common;
 
 namespace ValQ.Services.Questions
 {
     public class CharacterQuestionService : ICharacterQuestionService
     {
         #region Fields
-        private readonly IRepository<Character> _characterRepository;
-        private readonly IRepository<QuestionTemplate> _templateRepository;
-        private readonly IRepository<Skill> _skillRepository;
         private readonly ILocalizationService _localizationService;
-        private readonly IRepository<Origin> _originRepository;
+        private readonly IOriginService _originService;
+        private readonly ISkillService _skillService;
+        private readonly ICharacterService _characterService;
+        private readonly IQuestionTemplateService _questionTemplateService;
         #endregion
 
         #region Ctor
-        public CharacterQuestionService(IRepository<Character> characterRepository,
-                                        IRepository<QuestionTemplate> questionTemplateRepository,
-                                        IRepository<Skill> skillRepository,
-                                        ILocalizationService localizationService,
-                                        IRepository<Origin> originRepository)
+        public CharacterQuestionService(ILocalizationService localizationService,
+                                        IOriginService originService,
+                                        ISkillService skillService,
+                                        ICharacterService characterService,
+                                     IQuestionTemplateService questionTemplateService)
         {
-            _characterRepository = characterRepository;
-            _templateRepository = questionTemplateRepository;
-            _skillRepository = skillRepository;
             _localizationService = localizationService;
-            _originRepository = originRepository;
+            _originService = originService;
+            _skillService = skillService;
+            _characterService = characterService;
+            _questionTemplateService = questionTemplateService;
         }
         #endregion
 
         #region Private methods
-        private QuestionTemplate GetQuestionTemplate(CharacterQuestionType questionType)
+        private async Task<QuestionTemplate> GetQuestionTemplate(CharacterQuestionType questionType)
         {
-            return _templateRepository.Table.Where(o => o.TypeDescriptor == (int)questionType && o.Type == QuestionType.CHARACTER).First();
+            return await _questionTemplateService.GetQuestionTemplateByTypeAndDescriptorAsync(QuestionType.CHARACTER, (int)questionType);
 
-        }
-
-        private Skill GetRandomSkillExceptCharacter(long characterId)
-        {
-            Random rand = new Random();
-            int toSkip = rand.Next(1, _skillRepository.Table.Where(o => o.CharacterId != characterId).Count());
-
-            return _skillRepository.Table.Where(o => o.Id != characterId).Skip(toSkip).Take(1).First();
-        }
-
-
-        private Character GetRandomCharacter()
-        {
-            Random rand = new Random();
-            int toSkip = rand.Next(1, _characterRepository.Table.Count());
-            return _characterRepository.Table.Skip(toSkip).Take(1).Include(o => o.Skills).First();
         }
 
         #endregion
@@ -69,8 +54,8 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateCharacterClassQuestionAsync()
         {
             var question = new QuestionDTO();
-            var questionTemplate = GetQuestionTemplate(CharacterQuestionType.CLASS);
-            var randCharacter = GetRandomCharacter();
+            var questionTemplate = await GetQuestionTemplate(CharacterQuestionType.CLASS);
+            var randCharacter = await _characterService.GetRandomCharacterAsync();
             var correctAnswer = randCharacter.Class;
 
             //gets all the classes
@@ -113,8 +98,8 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateCharacterReleaseDateQuestionAsync()
         {
             var question = new QuestionDTO();
-            var questionTemplate = GetQuestionTemplate(CharacterQuestionType.RELEASE_DATE);
-            var randCharacter = GetRandomCharacter();
+            var questionTemplate = await GetQuestionTemplate(CharacterQuestionType.RELEASE_DATE);
+            var randCharacter = await _characterService.GetRandomCharacterAsync();
             string dateTimeFormat = "dd MMMM yyyy";
             var dateTimeCulture = CultureInfo.CreateSpecificCulture("en-EN");
 
@@ -173,8 +158,8 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateCharacterRequiredPointsForUltimateAsync()
         {
             var question = new QuestionDTO();
-            var questionTemplate = GetQuestionTemplate(CharacterQuestionType.REQUIRED_POINTS_FOR_ULTIMATE);
-            var randCharacter = GetRandomCharacter();
+            var questionTemplate = await GetQuestionTemplate(CharacterQuestionType.REQUIRED_POINTS_FOR_ULTIMATE);
+            var randCharacter = await _characterService.GetRandomCharacterAsync();
 
             var correctAnswer = randCharacter.RequiredPointsForUltimateSkill;
 
@@ -213,11 +198,12 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateCharacterSkillDoentBelongQuestionAsync()
         {
             var question = new QuestionDTO();
-            var questionTemplate = GetQuestionTemplate(CharacterQuestionType.SKILL_DOESNT_BELONG);
-            var randCharacter = GetRandomCharacter();
+            var questionTemplate = await GetQuestionTemplate(CharacterQuestionType.SKILL_DOESNT_BELONG);
+            var randCharacter = await _characterService.GetRandomCharacterAsync();
 
             var correctSkill = randCharacter.Skills.First();
-            var randSkillsExcept = GetRandomSkillExceptCharacter(randCharacter.Id);
+            var randSkillsExcept = await _skillService.GetRandomSkillExceptCharacterAsync(randCharacter.Id);
+
 
             List<Option> options = new List<Option>();
 
@@ -231,7 +217,7 @@ namespace ValQ.Services.Questions
             //get random 3 skill
             for (int i = 0; i < 3; i++)
             {
-                var randSkill = GetRandomSkillExceptCharacter(randCharacter.Id);
+                var randSkill = await _skillService.GetRandomSkillExceptCharacterAsync(randCharacter.Id);
 
                 options.Add(new Option()
                 {
@@ -253,8 +239,8 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateCharacterUltimateSkillNameAsync()
         {
             var question = new QuestionDTO();
-            var questionTemplate = GetQuestionTemplate(CharacterQuestionType.ULTIMATE_SKILL_NAME);
-            var randCharacter = GetRandomCharacter();
+            var questionTemplate = await GetQuestionTemplate(CharacterQuestionType.ULTIMATE_SKILL_NAME);
+            var randCharacter = await _characterService.GetRandomCharacterAsync();
 
             var ultimateForCharacter = randCharacter.Skills.Where(o => o.Type == SkillType.Ultimate).First();
 
@@ -262,7 +248,7 @@ namespace ValQ.Services.Questions
 
             for (int i = 0; i < 3; i++)
             {
-                randSkills.Add(GetRandomSkillExceptCharacter(randCharacter.Id));
+                randSkills.Add(await _skillService.GetRandomSkillExceptCharacterAsync(randCharacter.Id));
             }
 
 
@@ -297,11 +283,11 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateCharacterOriginQuestionAsync()
         {
             var question = new QuestionDTO();
-            var questionTemplate = GetQuestionTemplate(CharacterQuestionType.ORIGIN);
-            var randCharacter = GetRandomCharacter();
+            var questionTemplate = await GetQuestionTemplate(CharacterQuestionType.ORIGIN);
+            var randCharacter = await _characterService.GetRandomCharacterAsync();
 
-            var correctAnswer = randCharacter.Origin;
-            var listOfOrigins = await _originRepository.Table.ToListAsync();
+            var correctAnswer = await _originService.GetOriginByIdAsync(randCharacter.OriginId);
+            var listOfOrigins = await _originService.GetAllOriginsAsync();
 
             listOfOrigins.Remove(correctAnswer);
 
@@ -340,15 +326,15 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateCharacterSignatureSkillNameQuestionAsync()
         {
             var question = new QuestionDTO();
-            var questionTemplate = GetQuestionTemplate(CharacterQuestionType.SIGNATURE_SKILL_NAME);
-            var randCharacter = GetRandomCharacter();
+            var questionTemplate = await GetQuestionTemplate(CharacterQuestionType.SIGNATURE_SKILL_NAME);
+            var randCharacter = await _characterService.GetRandomCharacterAsync();
             var correctAnswer = randCharacter.Skills.Where(o => o.Type == SkillType.Signature).First();
             int numberOfRandomSkills = new Random().Next(0, 2);
             List<Skill> skills = new List<Skill>();
 
             for (int i = 0; i < numberOfRandomSkills; i++)
             {
-                skills.Add(GetRandomSkillExceptCharacter(randCharacter.Id));
+                skills.Add(await _skillService.GetRandomSkillExceptCharacterAsync(randCharacter.Id));
             }
 
             for (int i = 0; i < 3 - numberOfRandomSkills; i++)

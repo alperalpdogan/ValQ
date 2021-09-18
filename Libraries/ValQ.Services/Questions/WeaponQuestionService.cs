@@ -134,7 +134,7 @@ namespace ValQ.Services.Questions
             var randWeapon = GetRandomWeapon();
             List<Option> options = new List<Option>();
 
-            int correctDamage = randWeapon.WeaponDamages.Where(o => o.DamageToBodyPart == randomBodyPart).First().DamageFromMaxDistance;
+            int correctDamage = randWeapon.WeaponDamages.Where(o => o.DamageToBodyPart == randomBodyPart).First().MaxDamage;
 
             options.Add(new Option()
             {
@@ -173,11 +173,11 @@ namespace ValQ.Services.Questions
             });
 
             //get random damage from the same gun 
-            var incorrectDamagesForWeapon = randWeapon.WeaponDamages.Where(o => o.DamageFromMaxDistance != correctDamage);
+            var incorrectDamagesForWeapon = randWeapon.WeaponDamages.Where(o => o.MaxDamage != correctDamage);
             var incorrectDamagesForWeaponArr = incorrectDamagesForWeapon.ToArray();
             options.Add(new Option()
             {
-                Body = incorrectDamagesForWeaponArr[new Random().Next(0, incorrectDamagesForWeapon.Count())].DamageFromMaxDistance.ToString(),
+                Body = incorrectDamagesForWeaponArr[new Random().Next(0, incorrectDamagesForWeapon.Count())].MaxDamage.ToString(),
                 IsCorrectAnswer = false,
                 Id = new Random().Next()
             });
@@ -200,7 +200,7 @@ namespace ValQ.Services.Questions
             var randWeapon = GetRandomWeapon();
             List<Option> options = new List<Option>();
 
-            int correctDamage = randWeapon.WeaponDamages.Where(o => o.DamageToBodyPart == randomBodyPart).First().DamageFromMinDistance;
+            int correctDamage = randWeapon.WeaponDamages.Where(o => o.DamageToBodyPart == randomBodyPart).First().MinDamage;
 
             options.Add(new Option()
             {
@@ -240,11 +240,11 @@ namespace ValQ.Services.Questions
             });
 
             //get random damage from the same gun 
-            var incorrectDamagesForWeapon = randWeapon.WeaponDamages.Where(o => o.DamageFromMinDistance != correctDamage);
+            var incorrectDamagesForWeapon = randWeapon.WeaponDamages.Where(o => o.MinDamage != correctDamage);
             var incorrectDamagesForWeaponArr = incorrectDamagesForWeapon.ToArray();
             options.Add(new Option()
             {
-                Body = incorrectDamagesForWeaponArr[new Random().Next(0, incorrectDamagesForWeapon.Count())].DamageFromMinDistance.ToString(),
+                Body = incorrectDamagesForWeaponArr[new Random().Next(0, incorrectDamagesForWeapon.Count())].MinDamage.ToString(),
                 IsCorrectAnswer = false,
                 Id = new Random().Next()
             });

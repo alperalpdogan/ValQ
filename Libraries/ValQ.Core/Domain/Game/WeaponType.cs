@@ -8,12 +8,12 @@ namespace ValQ.Core.Domain.Game
 {
     public enum WeaponType
     {
-        Sidearm = 1,
-        SMG,
-        Shotgun,
-        Rifle,
-        Sniper,
-        Heavy,
-        Melee
+        Sidearm = 10,
+        SMG = 20,
+        Shotgun = 30,
+        Rifle = 40,
+        Sniper = 50,
+        Heavy = 60,
+        Melee = 100
     }
 }

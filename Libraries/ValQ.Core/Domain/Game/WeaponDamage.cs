@@ -13,9 +13,9 @@ namespace ValQ.Core.Domain.Game
 
         public int WeaponId { get; set; }
 
-        public int DamageFromMaxDistance { get; set; }
+        public int MaxDamage { get; set; }
 
-        public int DamageFromMinDistance { get; set; }
+        public int MinDamage { get; set; }
 
         public BodyPart DamageToBodyPart { get; set; }
     }

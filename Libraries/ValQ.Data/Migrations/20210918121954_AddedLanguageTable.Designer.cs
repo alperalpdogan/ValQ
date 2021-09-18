@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ValQ.Data.Context;
 
 namespace ValQ.Data.Migrations
 {
     [DbContext(typeof(ValQDbContext))]
-    partial class ValQDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210918121954_AddedLanguageTable")]
+    partial class AddedLanguageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -286,54 +288,6 @@ namespace ValQ.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Language");
-                });
-
-            modelBuilder.Entity("ValQ.Core.Domain.Localization.LocaleStringResource", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ResourceName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResourceValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LocaleStringResource");
-                });
-
-            modelBuilder.Entity("ValQ.Core.Domain.Localization.LocalizedProperty", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EntityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LocaleKey")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LocaleKeyGroup")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LocaleValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LocalizedProperty");
                 });
 
             modelBuilder.Entity("ValQ.Core.Domain.Logging.Log", b =>

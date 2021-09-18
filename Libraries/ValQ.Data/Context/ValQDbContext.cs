@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ValQ.Core.Domain.Game;
 using ValQ.Core.Domain.Logging;
+using ValQ.Core.Domain.Localization;
 
 namespace ValQ.Data.Context
 {
@@ -33,6 +34,12 @@ namespace ValQ.Data.Context
         public DbSet<QuestionTemplate> QuestionTemplate { get; set; }
 
         public DbSet<Log> Log { get; set; }
+
+        public DbSet<Language> Language { get; set; }
+
+        public DbSet<LocaleStringResource> LocaleStringResource { get; set; }
+
+        public DbSet<LocalizedProperty> LocalizedProperty { get; set; }
 
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

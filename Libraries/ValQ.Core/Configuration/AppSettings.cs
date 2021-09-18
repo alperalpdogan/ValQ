@@ -27,5 +27,10 @@ namespace ValQ.Core.Configuration
         /// Gets or sets password configuration parameters
         /// </summary>
         public PasswordConfig PasswordConfig { get; set; }
+
+        /// <summary>
+        /// Gets or sets game configuration
+        /// </summary>
+        public GameConfig GameConfig { get; set; } = new GameConfig();
     }
 }

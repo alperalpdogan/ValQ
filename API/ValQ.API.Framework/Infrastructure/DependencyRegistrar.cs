@@ -15,6 +15,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ValQ.Services.Localization;
 using ValQ.Services.Logging;
+using ValQ.Services.Games;
+using ValQ.Services.Questions;
+using ValQ.Services.Common;
 
 namespace ValQ.API.Framework.Infrastructure
 {
@@ -50,6 +53,13 @@ namespace ValQ.API.Framework.Infrastructure
             services.AddScoped<ILocalizedEntityService, LocalizedEntityService>();
             services.AddScoped<ILocalizationService, LocalizationService>();
             services.AddScoped<ILanguageService, LanguageService>();
+            services.AddScoped<ICharacterQuestionService, CharacterQuestionService>();
+            services.AddScoped<IWeaponQuestionService, WeaponQuestionService>();
+            services.AddScoped<ISkillQuestionService, SkillQuestionService>();
+            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IOriginService, OriginService>();
+            services.AddScoped<ISkillService, SkillService>();
+            services.AddScoped<IQuestionTemplateService, QuestionTemplateService>();
 
             //event consumers
             var consumers = typeFinder.FindClassesOfType(typeof(IConsumer<>)).ToList();

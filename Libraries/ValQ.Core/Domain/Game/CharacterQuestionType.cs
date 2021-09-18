@@ -15,6 +15,5 @@ namespace ValQ.Core.Domain.Game
         SIGNATURE_SKILL_NAME = 50,
         RELEASE_DATE = 60,
         SKILL_DOESNT_BELONG = 80,
-        SHUFFLED_CHARACTERS = 90
     }
 }

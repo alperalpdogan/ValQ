@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ValQ.Core.Domain.Localization;
 using ValQ.Services.DTO;
 
-namespace ValQ.Services.QuestionDTOs
+namespace ValQ.Services.Questions
 {
     public interface ISkillQuestionService
     {
