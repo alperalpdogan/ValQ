@@ -14,6 +14,11 @@ namespace ValQ.Services.Logging
     {
         private readonly IRepository<Log> _logRepository;
 
+        public Logger(IRepository<Log> logRepository)
+        {
+            _logRepository = logRepository;
+        }
+
         public async Task DeleteLogAsync(Log log)
         {
             if (log == null)

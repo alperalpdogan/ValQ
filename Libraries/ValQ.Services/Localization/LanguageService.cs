@@ -9,7 +9,7 @@ using ValQ.Core.Domain.Localization;
 using ValQ.Data.Repository;
 using ValQ.Services.Localization.Caching;
 
-namespace ValQ.Core.Services.Localization
+namespace ValQ.Services.Localization
 {
     public class LanguageService : ILanguageService
     {

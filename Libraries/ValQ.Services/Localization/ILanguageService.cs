@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ValQ.Core.Domain.Localization;
 
-namespace ValQ.Core.Services.Localization
+namespace ValQ.Services.Localization
 {
     /// <summary>
     /// Language service interface

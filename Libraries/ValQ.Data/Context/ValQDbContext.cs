@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ValQ.Core.Domain.Game;
+using ValQ.Core.Domain.Logging;
 
 namespace ValQ.Data.Context
 {
@@ -30,6 +31,8 @@ namespace ValQ.Data.Context
         public DbSet<WeaponDamage> WeaponDamage { get; set; }
 
         public DbSet<QuestionTemplate> QuestionTemplate { get; set; }
+
+        public DbSet<Log> Log { get; set; }
 
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

@@ -9,12 +9,9 @@ namespace ValQ.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    public abstract class BaseController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Test()
-        {
-            return Ok();
-        }
     }
 }

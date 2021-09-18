@@ -40,7 +40,7 @@ namespace ValQ.Services.Users
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
-            var userExists = (await _userManager.FindByEmailAsync(user.Email)) == null;
+            var userExists = (await _userManager.FindByEmailAsync(user.Email)) != null;
 
             if (userExists)
                 return new RegisterResult(RegisterFailureReason.USER_EXISTS);

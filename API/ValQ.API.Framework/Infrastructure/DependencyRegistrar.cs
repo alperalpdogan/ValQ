@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ValQ.Services.Localization;
+using ValQ.Services.Logging;
 
 namespace ValQ.API.Framework.Infrastructure
 {
@@ -39,6 +41,15 @@ namespace ValQ.API.Framework.Infrastructure
                 services.AddSingleton<ILocker, MemoryCacheManager>();
                 services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
             }
+            //services
+            services.AddSingleton<IEventPublisher, EventPublisher>();
+            services.AddScoped<ILogger, Logger>();
+            services.AddScoped<IWorkContext, APIWorkContext>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ILocalizedEntityService, LocalizedEntityService>();
+            services.AddScoped<ILocalizationService, LocalizationService>();
+            services.AddScoped<ILanguageService, LanguageService>();
 
             //event consumers
             var consumers = typeFinder.FindClassesOfType(typeof(IConsumer<>)).ToList();

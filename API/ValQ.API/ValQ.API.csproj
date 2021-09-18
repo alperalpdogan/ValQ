@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Infrastructure\" />
-    <Folder Include="Model\" />
     <Folder Include="Validators\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

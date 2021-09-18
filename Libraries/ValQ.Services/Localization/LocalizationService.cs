@@ -15,7 +15,6 @@ using ValQ.Core.Util;
 using ValQ.Core;
 using ValQ.Data.Repository;
 using ValQ.Services.Localization.Caching;
-using ValQ.Core.Services.Localization;
 using Microsoft.EntityFrameworkCore;
 
 namespace ValQ.Services.Localization
