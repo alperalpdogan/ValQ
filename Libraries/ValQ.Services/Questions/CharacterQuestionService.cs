@@ -241,8 +241,8 @@ namespace ValQ.Services.Questions
             var question = new QuestionDTO();
             var questionTemplate = await GetQuestionTemplate(CharacterQuestionType.ULTIMATE_SKILL_NAME);
             var randCharacter = await _characterService.GetRandomCharacterAsync();
-
-            var ultimateForCharacter = randCharacter.Skills.Where(o => o.Type == SkillType.Ultimate).First();
+            var characterSkills = await _skillService.GetSkillsForCharacterAsync(randCharacter.Id);
+            var ultimateForCharacter = characterSkills.Where(o => o.Type == SkillType.Ultimate).First();
 
             List<Skill> randSkills = new List<Skill>();
 

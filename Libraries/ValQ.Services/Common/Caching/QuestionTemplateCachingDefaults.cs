@@ -16,7 +16,7 @@ namespace ValQ.Services.Common.Caching
         /// {0} : Question Type
         /// {1} : Question Type Descriptor
         /// </remarks>
-        public static CacheKey QuestionTemplateByTypeAndDescriptorCacheKey => new CacheKey("ValQ.questionTemplate.byTypeAndDescriptor.{0}-{]");
+        public static CacheKey QuestionTemplateByTypeAndDescriptorCacheKey => new CacheKey("ValQ.questionTemplate.byTypeAndDescriptor.{0}-{1}");
 
     }
 }

@@ -60,6 +60,7 @@ namespace ValQ.API.Framework.Infrastructure
             services.AddScoped<IOriginService, OriginService>();
             services.AddScoped<ISkillService, SkillService>();
             services.AddScoped<IQuestionTemplateService, QuestionTemplateService>();
+            services.AddScoped<ICharacterService, CharacterService>();
 
             //event consumers
             var consumers = typeFinder.FindClassesOfType(typeof(IConsumer<>)).ToList();

@@ -10,6 +10,6 @@ namespace ValQ.Core.Domain.Game
     {
         Basic = 10,
         Signature = 20,
-        Ultimate = 100
+        Ultimate = 30
     }
 }

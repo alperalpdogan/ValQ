@@ -9,6 +9,7 @@ using ValQ.Core.Domain.Game;
 using ValQ.Core.Domain.Localization;
 using ValQ.Core.Util;
 using ValQ.Data.Repository;
+using ValQ.Services.Common;
 using ValQ.Services.DTO;
 using ValQ.Services.Localization;
 
@@ -17,51 +18,36 @@ namespace ValQ.Services.Questions
     public class SkillQuestionService : ISkillQuestionService
     {
         #region Fields
-        private readonly IRepository<Skill> _skillRepository;
-        private readonly IRepository<QuestionTemplate> _templateRepository;
-        private readonly IRepository<Character> _characterRepository;
+        private readonly ISkillService _skillService;
+        private readonly IQuestionTemplateService _questionTemplateService;
+        private readonly ICharacterService _characterService;
         private readonly ILocalizationService _localizationService;
+        private readonly IRepository<Skill> _skillRepository;
+        private readonly IRepository<Character> _characterRepository;
         #endregion
 
         #region Ctor
-        public SkillQuestionService(IRepository<Skill> skillRepository,
-                                    IRepository<QuestionTemplate> templateRepository,
-                                    IRepository<Character> characterRepository,
-                                    ILocalizationService localizationService)
+        public SkillQuestionService(ISkillService skillService,
+                                    IQuestionTemplateService questionTemplateService,
+                                    ICharacterService characterService,
+                                    ILocalizationService localizationService,
+                                    IRepository<Skill> skillRepository,
+                                    IRepository<Character> characterRepository)
         {
-            _skillRepository = skillRepository;
-            _templateRepository = templateRepository;
-            _characterRepository = characterRepository;
+            _skillService = skillService;
+            _questionTemplateService = questionTemplateService;
+            _characterService = characterService;
             _localizationService = localizationService;
+            _skillRepository = skillRepository;
+            _characterRepository = characterRepository;
         }
+
         #endregion
 
         #region Private Methods
-        private List<Skill> GetSkillsForCharacter(long characterId)
+        private async Task<QuestionTemplate> GetQuestionTemplate(SkillQuestionType questionType)
         {
-            return _skillRepository.Table.Where(o => o.CharacterId == characterId).ToList();
-        }
-
-        private Skill GetRandomSkillExceptCharacter(long characterId)
-        {
-            Random rand = new Random();
-            int toSkip = rand.Next(1, _skillRepository.Table.Where(o => o.CharacterId != characterId).Count());
-
-            return _skillRepository.Table.Where(o => o.Id != characterId).Skip(toSkip).Take(1).First();
-        }
-
-        private Skill GetRandomSkill()
-        {
-            Random rand = new Random();
-            int toSkip = rand.Next(1, _skillRepository.Table.Count());
-
-            return _skillRepository.Table.Skip(toSkip).Take(1).Include(o => o.Character).First();
-        }
-
-        private QuestionTemplate GetQuestionTemplate(SkillQuestionType questionType)
-        {
-            return _templateRepository.Table.Where(o => o.TypeDescriptor == (int)questionType && o.Type == QuestionType.SKILL).First();
-
+            return await _questionTemplateService.GetQuestionTemplateByTypeAndDescriptorAsync(QuestionType.SKILL, (int)questionType);
         }
         #endregion
 
@@ -71,17 +57,13 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateSkillCostQuestionAsync()
         {
             var question = new QuestionDTO();
-            QuestionTemplate questionTemplate = GetQuestionTemplate(SkillQuestionType.COST);
-            int skip = new Random().Next(1, _skillRepository.Table.Where(o => o.Cost > 0).Count());
-            var randomSkillWithCost = _skillRepository.Table.Where(o => o.Cost > 0).Skip(skip).Take(1).First();
+            QuestionTemplate questionTemplate = await GetQuestionTemplate(SkillQuestionType.COST);
+            var randomSkillWithCost = await _skillService.GetRandomSkillAsync(0);
             var correctAnswer = randomSkillWithCost.Cost;
 
             List<int> costs = new List<int>();
             costs.Add(correctAnswer);
-            var randCosts = _skillRepository.Table.Select(s => s.Cost).Distinct().Take(4).ToList();
-
-            if (randCosts.Contains(correctAnswer))
-                randCosts.Remove(correctAnswer);
+            var randCosts = (await _skillService.GetRandomSkillCost(3, correctAnswer)).Select(o => o.Cost);
 
             List<Option> options = new List<Option>();
 
@@ -117,12 +99,12 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateSkillDoesntBelongToSameCharacterQuestionAsync()
         {
             var question = new QuestionDTO();
-            QuestionTemplate questionTemplate = GetQuestionTemplate(SkillQuestionType.DOESNT_BELONG_TO_SAME_CHARACTER);
+            QuestionTemplate questionTemplate = await GetQuestionTemplate(SkillQuestionType.DOESNT_BELONG_TO_SAME_CHARACTER);
 
-            var randChar = _characterRepository.Table.Skip(new Random().Next(0, _characterRepository.Table.Count())).Take(1).First();
+            var randChar = await _characterService.GetRandomCharacterAsync();
 
-            var skillsForCharacter = GetSkillsForCharacter(randChar.Id);
-            var randSkillDoesntBelongToCharacter = GetRandomSkillExceptCharacter(randChar.Id);
+            var skillsForCharacter = await _skillService.GetSkillsForCharacterAsync(randChar.Id);
+            var randSkillDoesntBelongToCharacter = await _skillService.GetRandomSkillExceptCharacterAsync(randChar.Id);
             var skillName = await _localizationService.GetLocalizedAsync(randSkillDoesntBelongToCharacter, s => s.Name);
 
             List<Option> options = new List<Option>();
@@ -158,8 +140,8 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateSkillFindByPictureQuesitonAsync()
         {
             var question = new QuestionDTO();
-            QuestionTemplate questionTemplate = GetQuestionTemplate(SkillQuestionType.FIND_BY_PICTURE);
-            Skill randSkill = GetRandomSkill();
+            QuestionTemplate questionTemplate = await GetQuestionTemplate(SkillQuestionType.FIND_BY_PICTURE);
+            Skill randSkill = await _skillService.GetRandomSkillAsync();
             List<Option> options = new List<Option>();
 
             options.Add(new Option()
@@ -200,12 +182,12 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateSkillIsntSameTypeQuestionAsync()
         {
             var question = new QuestionDTO();
-            QuestionTemplate questionTemplate = GetQuestionTemplate(SkillQuestionType.ISNT_SAME_TYPE);
+            QuestionTemplate questionTemplate = await GetQuestionTemplate(SkillQuestionType.ISNT_SAME_TYPE);
 
             var skillList = EnumHelper<SkillType>.ConvertToList();
 
 
-            var randomSkill = GetRandomSkill();
+            var randomSkill = await _skillService.GetRandomSkillAsync();
             var randomSkillType = randomSkill.Type;
             var threeSkillsFromSameType = new List<Skill>();
 
@@ -255,13 +237,11 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateSkillIsSameTypeQuestionAsync()
         {
             var question = new QuestionDTO();
-            QuestionTemplate questionTemplate = GetQuestionTemplate(SkillQuestionType.SAME_TYPE_WITH_PRESELECTED_SKILL);
+            QuestionTemplate questionTemplate = await GetQuestionTemplate(SkillQuestionType.SAME_TYPE_WITH_PRESELECTED_SKILL);
 
-            var randSkill = GetRandomSkill();
+            var randSkill = await _skillService.GetRandomSkillAsync();
 
-            var toSkip = new Random().Next(1, _skillRepository.Table.Where(o => o.Type == randSkill.Type && o.Id != randSkill.Id).Count());
-
-            var randSkillWithTheSameType = _skillRepository.Table.Where(o => o.Type == randSkill.Type && o.Id != randSkill.Id).Skip(toSkip).Take(1).First();
+            var randSkillWithTheSameType = await _skillService.GetRandomSkillAsync(desiredSkillType: randSkill.Type);
 
             List<Option> options = new List<Option>();
 
@@ -276,14 +256,13 @@ namespace ValQ.Services.Questions
             var randomlySelectedDiffTypeSkills = new List<Skill>();
 
             //generate 3 wrong option
-            for (int i = 0; i < 3; i++)
+            while(randomlySelectedDiffTypeSkills.Count != 3)
             {
-                toSkip = new Random().Next(1, _skillRepository.Table.Where(o => o.Type != randSkill.Type && o.Id != randSkill.Id).Count() - 1);
+                var randSkillWithDifferentType = await _skillService.GetRandomSkillAsync(excludedSkillType: randSkill.Type);
 
-                var randSkillWithDifferentType = _skillRepository.Table
-                    .Where(o => o.Type != randSkill.Type)
-                    .Where(o => !randomlySelectedDiffTypeSkills.Select(o => o.Id).Contains(o.Id))
-                    .Skip(toSkip).Take(1).First();
+                //if duplicate skill is selected continue
+                if (randomlySelectedDiffTypeSkills.Contains(randSkillWithDifferentType))
+                    continue;
 
                 randomlySelectedDiffTypeSkills.Add(randSkillWithDifferentType);
 
@@ -308,11 +287,8 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateSkillSameCostWithPreselectedQuestionAsync()
         {
             var question = new QuestionDTO();
-            QuestionTemplate questionTemplate = GetQuestionTemplate(SkillQuestionType.SAME_COST_WITH_PRESELECTED_SKILL);
-
-            var totalPreCount = _skillRepository.Table.Where(o => o.Cost > 0).Count();
-            var random = new Random().Next(0, totalPreCount);
-            var preSelectedRandSkillWithCost = _skillRepository.Table.Where(o => o.Cost > 0).Skip(random).Take(1).First();
+            QuestionTemplate questionTemplate = await GetQuestionTemplate(SkillQuestionType.SAME_COST_WITH_PRESELECTED_SKILL);
+            var preSelectedRandSkillWithCost = await _skillService.GetRandomSkillAsync(0);
 
             List<Skill> skills = new List<Skill>();
             //fetch 3 skills that doesn't have the same cost
@@ -359,10 +335,10 @@ namespace ValQ.Services.Questions
         public async Task<QuestionDTO> GenerateSkillBelongsToCharacterQuestionAsync()
         {
             var question = new QuestionDTO();
-            QuestionTemplate questionTemplate = GetQuestionTemplate(SkillQuestionType.CHARACTER_NAME);
+            QuestionTemplate questionTemplate = await GetQuestionTemplate(SkillQuestionType.CHARACTER_NAME);
 
-            var randSkill = GetRandomSkill();
-            var correctAnswer = randSkill.Character.Name;
+            var randSkill = await _skillService.GetRandomSkillAsync();
+            var correctAnswer = (await _characterService.GetCharacterByIdAsync(randSkill.CharacterId)).Name;
 
             List<string> charNames = new List<string>();
             charNames.Add(correctAnswer);
@@ -370,7 +346,6 @@ namespace ValQ.Services.Questions
             for (int i = 0; i < 3; i++)
             {
                 int skip = new Random().Next(1, _characterRepository.Table.Where(o => !charNames.Contains(o.Name)).Count());
-
                 var newCharacter = _characterRepository.Table.Where(o => !charNames.Contains(o.Name)).Skip(skip).Take(1).Select(o => o.Name).First();
 
                 charNames.Add(newCharacter);
