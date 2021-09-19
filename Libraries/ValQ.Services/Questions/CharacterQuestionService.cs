@@ -83,8 +83,6 @@ namespace ValQ.Services.Questions
                     Id = new Random().Next()
                 });
             }
-
-
             //shuffle the options
 
             var localizedQuestionTemplate = await _localizationService.GetLocalizedAsync(questionTemplate, q => q.Template);

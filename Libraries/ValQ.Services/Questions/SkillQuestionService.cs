@@ -74,7 +74,7 @@ namespace ValQ.Services.Questions
                 Id = new Random().Next()
             });
 
-            foreach (var cost in randCosts.Take(3))
+            foreach (var cost in randCosts)
             {
                 options.Add(new Option()
                 {
@@ -84,7 +84,6 @@ namespace ValQ.Services.Questions
                 });
             }
 
-            var localizedBody = await _localizationService.GetLocalizedAsync(questionTemplate, temp => temp.Template);
             var localizedSkillName = await _localizationService.GetLocalizedAsync(randomSkillWithCost, s => s.Name);
             var localizedTemplate = await _localizationService.GetLocalizedAsync(questionTemplate, q => q.Template);
 
