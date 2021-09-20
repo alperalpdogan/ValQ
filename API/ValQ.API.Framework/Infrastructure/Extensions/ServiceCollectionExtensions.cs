@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ValQ.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using ValQ.Core;
-using ValQ.Core.Domain.User;
+using ValQ.Core.Domain.Users;
 using Microsoft.AspNetCore.Mvc;
 using ValQ.API.Framework.Models;
 

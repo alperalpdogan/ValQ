@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ValQ.Core.Domain.User;
+using ValQ.Core.Domain.Users;
 using ValQ.Services.DTO;
 
 namespace ValQ.Services.Users

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ValQ.Data.Context;
 
 namespace ValQ.Data.Migrations
 {
     [DbContext(typeof(ValQDbContext))]
-    partial class ValQDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210920183508_AddedMatchTable")]
+    partial class AddedMatchTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,30 +211,6 @@ namespace ValQ.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QuestionTemplate");
-                });
-
-            modelBuilder.Entity("ValQ.Core.Domain.Game.Rank", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EloLowerThreshold")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EloUpperThreshold")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PictureURL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Rank");
                 });
 
             modelBuilder.Entity("ValQ.Core.Domain.Game.Skill", b =>

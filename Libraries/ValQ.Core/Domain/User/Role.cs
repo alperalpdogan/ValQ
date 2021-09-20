@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ValQ.Core.Domain.User
+namespace ValQ.Core.Domain.Users
 {
     public class Role : IdentityRole
     {

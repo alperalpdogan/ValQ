@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ValQ.Core.Domain.User
+namespace ValQ.Core.Domain.Users
 {
     public class User : IdentityUser
     {
@@ -13,6 +13,6 @@ namespace ValQ.Core.Domain.User
 
         public string LastName { get; set; }
 
-        public string PhoneNumber { get; set; }
+        public int Elo { get; set; }
     }
 }

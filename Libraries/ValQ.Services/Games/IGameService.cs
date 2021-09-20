@@ -10,6 +10,8 @@ namespace ValQ.Services.Games
 {
     public interface IGameService
     {
-        Task<Game> StartNewGameAsync();
+        Task<Game> GenerateGameAsync();
+
+        Task<GameResultDTO> FinishGameAsync(int numberOfCorrectAnswer, int numberOfIncorrectAnswer);
     }
 }

@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using ValQ.Core.Configuration;
-using ValQ.Core.Domain.User;
+using ValQ.Core.Domain.Users;
 using ValQ.Core.Infrastructure;
 
 namespace ValQ.Services.Users

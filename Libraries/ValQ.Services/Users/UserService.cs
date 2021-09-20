@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ValQ.Core;
 using ValQ.Core.Domain.Logging;
-using ValQ.Core.Domain.User;
+using ValQ.Core.Domain.Users;
 using ValQ.Services.DTO;
 using ValQ.Services.Logging;
 
@@ -48,7 +48,8 @@ namespace ValQ.Services.Users
             var createUserResult = await _userManager.CreateAsync(new User()
             {
                 UserName = user.Email,
-                Email = user.Email
+                Email = user.Email,
+                Elo = 1000
             }, user.Password);
 
             if (!createUserResult.Succeeded)

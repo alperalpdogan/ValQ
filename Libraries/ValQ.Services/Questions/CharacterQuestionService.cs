@@ -71,7 +71,7 @@ namespace ValQ.Services.Questions
             {
                 Body = await _localizationService.GetLocalizedEnumAsync(correctAnswer),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             foreach (var characterClass in listOfClasses)
@@ -80,7 +80,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = await _localizationService.GetLocalizedEnumAsync(characterClass),
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
             //shuffle the options
@@ -113,7 +113,7 @@ namespace ValQ.Services.Questions
             options.Add(new Option()
             {
                 Body = correctAnswer.ToString(dateTimeFormat, dateTimeCulture),
-                Id = new Random().Next(),
+                Id = Guid.NewGuid(),
                 IsCorrectAnswer = true,
             });
 
@@ -126,7 +126,7 @@ namespace ValQ.Services.Questions
                 options.Add(new Option()
                 {
                     Body = generatedDate.ToString(dateTimeFormat, dateTimeCulture),
-                    Id = new Random().Next(),
+                    Id = Guid.NewGuid(),
                     IsCorrectAnswer = false
                 });
             }
@@ -140,7 +140,7 @@ namespace ValQ.Services.Questions
                 options.Add(new Option()
                 {
                     Body = generatedDate.ToString(dateTimeFormat, dateTimeCulture),
-                    Id = new Random().Next(),
+                    Id = Guid.NewGuid(),
                     IsCorrectAnswer = false
                 });
             }
@@ -167,7 +167,7 @@ namespace ValQ.Services.Questions
             {
                 Body = correctAnswer.ToString(),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             List<int> optionValues = new List<int> { 5, 6, 7, 8 };
@@ -180,7 +180,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = value.ToString(),
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
 
@@ -208,7 +208,7 @@ namespace ValQ.Services.Questions
             options.Add(new Option()
             {
                 Body = await _localizationService.GetLocalizedAsync(correctSkill, s => s.Name),
-                Id = new Random().Next(),
+                Id = Guid.NewGuid(),
                 IsCorrectAnswer = true
             });
 
@@ -220,7 +220,7 @@ namespace ValQ.Services.Questions
                 options.Add(new Option()
                 {
                     Body = await _localizationService.GetLocalizedAsync(randSkill, s => s.Name),
-                    Id = new Random().Next(),
+                    Id = Guid.NewGuid(),
                     IsCorrectAnswer = true
                 });
             }
@@ -256,7 +256,7 @@ namespace ValQ.Services.Questions
             {
                 Body = await _localizationService.GetLocalizedAsync(ultimateForCharacter, s => s.Name),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             foreach (var skill in randSkills)
@@ -265,7 +265,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = await _localizationService.GetLocalizedAsync(skill, s => s.Name),
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
 
@@ -295,7 +295,7 @@ namespace ValQ.Services.Questions
             {
                 Body = await _localizationService.GetLocalizedAsync(correctAnswer, o => o.Name),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
 
@@ -309,7 +309,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = await _localizationService.GetLocalizedAsync(characterClass, o => o.Name),
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
 
@@ -351,7 +351,7 @@ namespace ValQ.Services.Questions
             {
                 Body = await _localizationService.GetLocalizedAsync(correctAnswer, c => c.Name),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             foreach (var skill in skills)
@@ -360,7 +360,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = await _localizationService.GetLocalizedAsync(skill, c => c.Name),
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
 

@@ -8,7 +8,7 @@ namespace ValQ.Services.DTO
 {
     public class Option
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Body { get; set; }
 

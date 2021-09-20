@@ -71,7 +71,7 @@ namespace ValQ.Services.Questions
             {
                 Body = correctAnswer.ToString(),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             foreach (var cost in randCosts)
@@ -80,7 +80,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = cost.ToString(),
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
 
@@ -112,7 +112,7 @@ namespace ValQ.Services.Questions
             {
                 Body = skillName,
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             foreach (var item in skillsForCharacter.Take(3))
@@ -121,7 +121,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = await _localizationService.GetLocalizedAsync(item, s => s.Name),
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
 
@@ -147,7 +147,7 @@ namespace ValQ.Services.Questions
             {
                 Body = await _localizationService.GetLocalizedAsync(randSkill, s => s.Name),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             }) ;
 
             List<Skill> skills = new List<Skill>();
@@ -167,7 +167,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = await _localizationService.GetLocalizedAsync(item, s => s.Name),
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
 
@@ -210,7 +210,7 @@ namespace ValQ.Services.Questions
             {
                 Body = await _localizationService.GetLocalizedAsync(randDifferentTypeSkill, s => s.Name),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
 
@@ -220,7 +220,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = await _localizationService.GetLocalizedAsync(item, s => s.Name),
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
 
@@ -247,7 +247,7 @@ namespace ValQ.Services.Questions
             options.Add(new Option()
             {
                 Body = await _localizationService.GetLocalizedAsync(randSkillWithTheSameType, s => s.Name),
-                Id = new Random().Next(),
+                Id = Guid.NewGuid(),
                 IsCorrectAnswer = true
             });
 
@@ -268,7 +268,7 @@ namespace ValQ.Services.Questions
                 options.Add(new Option()
                 {
                     Body = await _localizationService.GetLocalizedAsync(randSkillWithDifferentType, s => s.Name),
-                    Id = new Random().Next(),
+                    Id = Guid.NewGuid(),
                     IsCorrectAnswer = false
                 });
             }
@@ -309,7 +309,7 @@ namespace ValQ.Services.Questions
             {
                 IsCorrectAnswer = true,
                 Body = await _localizationService.GetLocalizedAsync(correctSkill, s => s.Name),
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             foreach (var item in skills)
@@ -318,7 +318,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = await _localizationService.GetLocalizedAsync(item, s => s.Name),
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
 
@@ -355,7 +355,7 @@ namespace ValQ.Services.Questions
             {
                 Body = correctAnswer,
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             foreach (var name in charNames.Where(o => o != correctAnswer))
@@ -364,7 +364,7 @@ namespace ValQ.Services.Questions
                 {
                     Body = name,
                     IsCorrectAnswer = false,
-                    Id = new Random().Next()
+                    Id = Guid.NewGuid()
                 });
             }
 

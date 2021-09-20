@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ValQ.Data.Context;
 
 namespace ValQ.Data.Migrations
 {
     [DbContext(typeof(ValQDbContext))]
-    partial class ValQDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210920183046_AddedEloToUser")]
+    partial class AddedEloToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,29 +154,6 @@ namespace ValQ.Data.Migrations
                     b.ToTable("Character");
                 });
 
-            modelBuilder.Entity("ValQ.Core.Domain.Game.Match", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EloChange")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PlayedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Match");
-                });
-
             modelBuilder.Entity("ValQ.Core.Domain.Game.Origin", b =>
                 {
                     b.Property<int>("Id")
@@ -209,30 +188,6 @@ namespace ValQ.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QuestionTemplate");
-                });
-
-            modelBuilder.Entity("ValQ.Core.Domain.Game.Rank", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EloLowerThreshold")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EloUpperThreshold")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PictureURL")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Rank");
                 });
 
             modelBuilder.Entity("ValQ.Core.Domain.Game.Skill", b =>
@@ -571,15 +526,6 @@ namespace ValQ.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Origin");
-                });
-
-            modelBuilder.Entity("ValQ.Core.Domain.Game.Match", b =>
-                {
-                    b.HasOne("ValQ.Core.Domain.Users.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ValQ.Core.Domain.Game.Skill", b =>

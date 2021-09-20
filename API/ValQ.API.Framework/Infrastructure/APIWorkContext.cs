@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ValQ.Core.Domain.Localization;
-using ValQ.Core.Domain.User;
+using ValQ.Core.Domain.Users;
 using ValQ.Core;
 using ValQ.Services.Users;
 using ValQ.Services.Localization;

@@ -1,5 +1,5 @@
 ﻿using ValQ.Core.Domain.Common;
-using ValQ.Core.Domain.User;
+using ValQ.Core.Domain.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -40,6 +40,10 @@ namespace ValQ.Data.Context
         public DbSet<LocaleStringResource> LocaleStringResource { get; set; }
 
         public DbSet<LocalizedProperty> LocalizedProperty { get; set; }
+
+        public DbSet<Match> Match { get; set; }
+
+        public DbSet<Rank> Rank { get; set; }
 
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

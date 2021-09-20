@@ -8,7 +8,7 @@ namespace ValQ.Services.DTO
 {
     public class QuestionDTO
     {
-        public int Id => new Random().Next();
+        public Guid Id => Guid.NewGuid();
 
         public string Body { get; set; }
 

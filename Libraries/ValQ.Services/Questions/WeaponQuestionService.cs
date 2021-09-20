@@ -69,14 +69,14 @@ namespace ValQ.Services.Questions
             {
                 Body = randWeapon.Price.ToString(),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             options.Add(new Option()
             {
                 Body = sameTypeWeapon.Price.ToString(),
                 IsCorrectAnswer = false,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             //genarete two random incorrect option
@@ -104,7 +104,7 @@ namespace ValQ.Services.Questions
                     {
                         Body = (randWeapon.Price - randomNumberToAddOrSubtract).ToString(),
                         IsCorrectAnswer = false,
-                        Id = new Random().Next()
+                        Id = Guid.NewGuid()
                     });
 
                 //%50 chance to add the generated number
@@ -113,7 +113,7 @@ namespace ValQ.Services.Questions
                     {
                         Body = (randWeapon.Price * randomNumberToAddOrSubtract).ToString(),
                         IsCorrectAnswer = false,
-                        Id = new Random().Next()
+                        Id = Guid.NewGuid()
                     });
             }
 
@@ -140,7 +140,7 @@ namespace ValQ.Services.Questions
             {
                 Body = correctDamage.ToString(),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             //subtract and add 1-6 damage point for incorrect options
@@ -161,7 +161,7 @@ namespace ValQ.Services.Questions
             {
                 Body = (correctDamage - numberOfPointsToMove).ToString(),
                 IsCorrectAnswer = false,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             //add 1-6 damage point for incorrect option
@@ -169,7 +169,7 @@ namespace ValQ.Services.Questions
             {
                 Body = (correctDamage + numberOfPointsToMove).ToString(),
                 IsCorrectAnswer = false,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             //get random damage from the same gun 
@@ -179,7 +179,7 @@ namespace ValQ.Services.Questions
             {
                 Body = incorrectDamagesForWeaponArr[new Random().Next(0, incorrectDamagesForWeapon.Count())].MaxDamage.ToString(),
                 IsCorrectAnswer = false,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             var localizedQuestionTemplate = await _localizationService.GetLocalizedAsync(questionTemplate, q => q.Template);
@@ -206,7 +206,7 @@ namespace ValQ.Services.Questions
             {
                 Body = correctDamage.ToString(),
                 IsCorrectAnswer = true,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             //subtract and add 1-6 damage point for incorrect options
@@ -227,7 +227,7 @@ namespace ValQ.Services.Questions
             {
                 Body = (correctDamage - numberOfPointsToMove).ToString(),
                 IsCorrectAnswer = false,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
 
@@ -236,7 +236,7 @@ namespace ValQ.Services.Questions
             {
                 Body = (correctDamage + numberOfPointsToMove).ToString(),
                 IsCorrectAnswer = false,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             //get random damage from the same gun 
@@ -246,7 +246,7 @@ namespace ValQ.Services.Questions
             {
                 Body = incorrectDamagesForWeaponArr[new Random().Next(0, incorrectDamagesForWeapon.Count())].MinDamage.ToString(),
                 IsCorrectAnswer = false,
-                Id = new Random().Next()
+                Id = Guid.NewGuid()
             });
 
             var localizedQuestionTemplate = await _localizationService.GetLocalizedAsync(questionTemplate, q => q.Template);

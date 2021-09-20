@@ -24,11 +24,11 @@ namespace ValQ.API.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
+        [HttpPost("login")]
         [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), 423)]
         [ProducesResponseType(typeof(Error), 400)]
-        public async Task<IActionResult> Login([FromQuery] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             var result = await _authenticationService.AuthenticateAsync(loginRequest.Username, loginRequest.Password);
 
@@ -53,7 +53,7 @@ namespace ValQ.API.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Error), 409)]
         [ProducesResponseType(typeof(Error), 400)]

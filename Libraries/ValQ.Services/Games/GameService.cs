@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ValQ.Core.Domain.Game;
-using ValQ.Core.Domain.Localization;
-using ValQ.Core.Domain.User;
+using ValQ.Core.Domain.Users;
 using ValQ.Core.Util;
 using ValQ.Core;
-using ValQ.Data.Repository;
 using ValQ.Services.DTO;
 using ValQ.Services.Questions;
 using ValQ.Core.Infrastructure;
 using ValQ.Core.Configuration;
+using Microsoft.AspNetCore.Identity;
 
 namespace ValQ.Services.Games
 {
@@ -23,22 +20,58 @@ namespace ValQ.Services.Games
         private readonly ISkillQuestionService _skillQuestionService;
         private readonly IWeaponQuestionService _weaponQuestionService;
         private readonly AppSettings _appSettings;
+        private readonly IMatchService _matchService;
+        private readonly IWorkContext _workContext;
+        private readonly UserManager<User> _userManager;
         #endregion
 
         #region Ctor
         public GameService(ICharacterQuestionService characterQuestionService,
                            ISkillQuestionService skillQuestionService,
-                           IWeaponQuestionService weaponQuestionService)
+                           IWeaponQuestionService weaponQuestionService,
+                           IWorkContext workContext,
+                           IMatchService matchService,
+                           UserManager<User> userManager)
         {
             _characterQuestionService = characterQuestionService;
             _skillQuestionService = skillQuestionService;
             _weaponQuestionService = weaponQuestionService;
             _appSettings = Singleton<AppSettings>.Instance;
+            _workContext = workContext;
+            _matchService = matchService;
+            _userManager = userManager;
         }
         #endregion
 
         #region Methods
-        public async Task<Game> StartNewGameAsync()
+
+        public async Task<GameResultDTO> FinishGameAsync(int numberOfCorrectAnswer, int numberOfIncorrectAnswer)
+        {
+            var user = await _workContext.GetCurrentUserAsync();
+            var eloChange = (int)((numberOfCorrectAnswer - (numberOfIncorrectAnswer * 1.8)) * 10);
+
+            await _matchService.InsertMatchAsync(new Match()
+            {
+                PlayedAt = DateTime.Now,
+                EloChange = eloChange,
+                UserId = user.Id,
+            });
+
+            user.Elo = user.Elo + eloChange;
+            await _userManager.UpdateAsync(user);
+
+            return new GameResultDTO()
+            {
+                NumberOfCorrectAnswers = numberOfCorrectAnswer,
+                NumberOfIncorrectAnswers = numberOfIncorrectAnswer,
+                EloChange = eloChange,
+                OldElo = user.Elo,
+                NewElo = user.Elo - eloChange
+            };
+        }
+
+
+        public async Task<Game> GenerateGameAsync()
         {
             Game game = new Game();
             game.Guid = Guid.NewGuid();
