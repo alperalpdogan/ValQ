@@ -55,9 +55,13 @@ namespace ValQ.Services.Games
                 PlayedAt = DateTime.Now,
                 EloChange = eloChange,
                 UserId = user.Id,
+                NumberOfCorrectAnswers = numberOfCorrectAnswer,
+                NumberOfIncorrectAnswers = numberOfIncorrectAnswer
             });
 
             user.Elo = user.Elo + eloChange;
+            user.TotalNumberOfCorrectAnswers += numberOfCorrectAnswer;
+            user.TotalNumberOfIncorrectAnswers += numberOfIncorrectAnswer;
             await _userManager.UpdateAsync(user);
 
             return new GameResultDTO()

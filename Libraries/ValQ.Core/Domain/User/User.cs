@@ -9,10 +9,12 @@ namespace ValQ.Core.Domain.Users
 {
     public class User : IdentityUser
     {
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public string NickName { get; set; }
 
         public int Elo { get; set; }
+
+        public int TotalNumberOfCorrectAnswers { get; set; }
+
+        public int TotalNumberOfIncorrectAnswers { get; set; }
     }
 }

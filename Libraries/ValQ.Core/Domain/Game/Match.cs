@@ -17,5 +17,9 @@ namespace ValQ.Core.Domain.Game
         public DateTime PlayedAt { get; set; }
 
         public int EloChange { get; set; }
+
+        public int NumberOfCorrectAnswers { get; set; }
+
+        public int NumberOfIncorrectAnswers { get; set; }
     }
 }
