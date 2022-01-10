@@ -11,6 +11,6 @@ namespace ValQ.API.Model.Response
 
         public int NumberOfIncorrectAnswers { get; set; }
 
-        public int CorrectAnswerRate => (NumberOfCorrectAnswers / (NumberOfCorrectAnswers + NumberOfIncorrectAnswers)) * 100;
+        public double CorrectAnswerRate => ((double)NumberOfCorrectAnswers / (double)(NumberOfCorrectAnswers + NumberOfIncorrectAnswers)) * 100;
     }
 }

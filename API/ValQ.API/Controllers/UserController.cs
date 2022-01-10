@@ -31,6 +31,7 @@ namespace ValQ.API.Controllers
         }
 
         [HttpGet]
+        [Route("details")]
         public async Task<IActionResult> Details()
         {
             var user = await _workContext.GetCurrentUserAsync();
@@ -51,6 +52,7 @@ namespace ValQ.API.Controllers
         }
 
         [HttpGet]
+        [Route("matchHistory")]
         public async Task<IActionResult> MatchHistory([FromQuery] PagedRequest request) 
         {
             var user = await _workContext.GetCurrentUserAsync();
