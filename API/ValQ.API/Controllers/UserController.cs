@@ -38,7 +38,7 @@ namespace ValQ.API.Controllers
             var rank = await _rankService.GetRankForElo(user.Elo);
             return Ok(new Profile()
             {
-                CorrectAnswerRate = (user.TotalNumberOfCorrectAnswers / (user.TotalNumberOfCorrectAnswers + user.TotalNumberOfIncorrectAnswers)) * 100,
+                CorrectAnswerRate = Convert.ToInt32(((double)user.TotalNumberOfCorrectAnswers / (double)(user.TotalNumberOfCorrectAnswers + user.TotalNumberOfIncorrectAnswers)) * 100),
                 NumberOfCorrectAnswers = user.TotalNumberOfCorrectAnswers,
                 NumberOfIncorrectAnswers = user.TotalNumberOfIncorrectAnswers,
                 Elo = user.Elo,

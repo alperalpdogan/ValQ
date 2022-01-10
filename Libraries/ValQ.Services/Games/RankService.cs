@@ -21,8 +21,9 @@ namespace ValQ.Services.Games
         public async Task<Rank> GetRankForElo(int elo)
         {
             return await _rankRepository.Table
-                .Where(o => o.EloLowerThreshold >= elo && o.EloUpperThreshold < elo)
-                .SingleOrDefaultAsync();
+                .Where(o => elo >= o.EloLowerThreshold)
+                .Where(o => elo < o.EloUpperThreshold)
+                .SingleAsync();
         }
     }
 }
