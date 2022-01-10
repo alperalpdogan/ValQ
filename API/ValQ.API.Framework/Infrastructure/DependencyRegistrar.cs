@@ -62,7 +62,7 @@ namespace ValQ.API.Framework.Infrastructure
             services.AddScoped<IQuestionTemplateService, QuestionTemplateService>();
             services.AddScoped<ICharacterService, CharacterService>();
             services.AddScoped<IMatchService, MatchService>();
-
+            services.AddScoped<IRankService, RankService>();
             //event consumers
             var consumers = typeFinder.FindClassesOfType(typeof(IConsumer<>)).ToList();
             foreach (var consumer in consumers)
