@@ -53,7 +53,10 @@ namespace ValQ.Services.Users
             }, user.Password);
 
             if (!createUserResult.Succeeded)
+            {
+                return new RegisterResult(RegisterFailureReason.INVALID_PASSWORD);
                 await _logger.InsertLogAsync(LogLevel.Error, "Could not create user", string.Concat(createUserResult.Errors.Select(o => o.Description)));
+            }
 
             var authResult = await _authenticationService.AuthenticateAsync(user.Email, user.Password);
 
