@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ValQ.API.Model.Request;
 using ValQ.API.Model.Response;
 using ValQ.Core;
+using ValQ.Core.Domain.Users;
 using ValQ.Services.Games;
 using ValQ.Services.Localization;
 
@@ -65,11 +66,18 @@ namespace ValQ.API.Controllers
                 matchHistoryLines.Add(new MatchHistoryLine()
                 {
                     NumberOfCorrectAnswers = match.NumberOfCorrectAnswers,
-                    NumberOfIncorrectAnswers = match.NumberOfIncorrectAnswers
+                    NumberOfIncorrectAnswers = match.NumberOfIncorrectAnswers,
+                    PlayedAt = match.PlayedAt,
+                    EloChange = match.EloChange
                 });
             }
 
             return Ok(matchHistoryLines);
+        }
+
+        public async Task<IActionResult> RankHistory([FromQuery] PagedRequest request)
+        {
+
         }
     }
 }

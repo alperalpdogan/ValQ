@@ -16,5 +16,9 @@ namespace ValQ.API.Model.Response
         public int OldElo { get; set; }
 
         public int NewElo { get; set; }
+
+        public Rank NewRank { get; set; }
+
+        public Rank OldRank { get; set; }
     }
 }

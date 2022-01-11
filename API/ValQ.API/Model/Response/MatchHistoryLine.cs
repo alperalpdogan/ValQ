@@ -7,6 +7,10 @@ namespace ValQ.API.Model.Response
 {
     public class MatchHistoryLine
     {
+        public DateTime PlayedAt { get; set; }
+
+        public int EloChange { get; set; }
+
         public int NumberOfCorrectAnswers { get; set; }
 
         public int NumberOfIncorrectAnswers { get; set; }

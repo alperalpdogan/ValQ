@@ -38,7 +38,17 @@ namespace ValQ.API.Controllers
                 NumberOfCorrectAnswers = result.NumberOfCorrectAnswers,
                 NewElo = result.NewElo,
                 NumberOfIncorrectAnswers = result.NumberOfIncorrectAnswers,
-                OldElo = result.OldElo
+                OldElo = result.OldElo,
+                NewRank = new Rank()
+                {
+                    Name = result.NewRank.Name,
+                    URL = result.NewRank.PictureURL
+                },
+                OldRank = new Rank()
+                {
+                    Name = result.OldRank.Name,
+                    URL = result.OldRank.PictureURL
+                }
             };
 
             return Ok(response);

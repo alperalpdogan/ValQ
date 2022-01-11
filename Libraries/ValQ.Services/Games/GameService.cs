@@ -23,6 +23,7 @@ namespace ValQ.Services.Games
         private readonly IMatchService _matchService;
         private readonly IWorkContext _workContext;
         private readonly UserManager<User> _userManager;
+        private readonly IRankService _rankService;
         #endregion
 
         #region Ctor
@@ -31,7 +32,8 @@ namespace ValQ.Services.Games
                            IWeaponQuestionService weaponQuestionService,
                            IWorkContext workContext,
                            IMatchService matchService,
-                           UserManager<User> userManager)
+                           UserManager<User> userManager,
+                           IRankService rankService)
         {
             _characterQuestionService = characterQuestionService;
             _skillQuestionService = skillQuestionService;
@@ -40,6 +42,7 @@ namespace ValQ.Services.Games
             _workContext = workContext;
             _matchService = matchService;
             _userManager = userManager;
+            _rankService = rankService;
         }
         #endregion
 
@@ -49,14 +52,15 @@ namespace ValQ.Services.Games
         {
             var user = await _workContext.GetCurrentUserAsync();
             var eloChange = (int)((numberOfCorrectAnswer - (numberOfIncorrectAnswer * 1.8)) * 10);
-
+            var oldRank = await _rankService.GetRankForElo(user.Elo);
+            var newRank = await _rankService.GetRankForElo(user.Elo + eloChange);
             await _matchService.InsertMatchAsync(new Match()
             {
                 PlayedAt = DateTime.Now,
                 EloChange = eloChange,
                 UserId = user.Id,
                 NumberOfCorrectAnswers = numberOfCorrectAnswer,
-                NumberOfIncorrectAnswers = numberOfIncorrectAnswer
+                NumberOfIncorrectAnswers = numberOfIncorrectAnswer,
             });
 
             user.Elo = user.Elo + eloChange;
@@ -70,7 +74,23 @@ namespace ValQ.Services.Games
                 NumberOfIncorrectAnswers = numberOfIncorrectAnswer,
                 EloChange = eloChange,
                 OldElo = user.Elo,
-                NewElo = user.Elo - eloChange
+                NewElo = user.Elo - eloChange,
+                NewRank = new Rank()
+                {
+                    EloLowerThreshold = newRank.EloLowerThreshold,
+                    EloUpperThreshold = newRank.EloUpperThreshold,
+                    Name = newRank.Name,
+                    PictureURL = newRank.PictureURL,
+                    Id = newRank.Id,
+                },
+                OldRank = new Rank()
+                {
+                    EloLowerThreshold = oldRank.EloLowerThreshold,
+                    EloUpperThreshold = oldRank.EloUpperThreshold,
+                    Name = oldRank.Name,
+                    PictureURL = oldRank.PictureURL,
+                    Id = oldRank.Id,
+                }
             };
         }
 

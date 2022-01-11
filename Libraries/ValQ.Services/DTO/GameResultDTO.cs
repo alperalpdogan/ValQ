@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ValQ.Core.Domain.Game;
 
 namespace ValQ.Services.DTO
 {
@@ -17,5 +18,9 @@ namespace ValQ.Services.DTO
         public int OldElo { get; set; }
 
         public int NewElo { get; set; }
+
+        public Rank NewRank { get; set; }
+
+        public Rank OldRank { get; set; }
     }
 }
