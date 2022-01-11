@@ -68,6 +68,17 @@ namespace ValQ.Services.Games
             user.TotalNumberOfIncorrectAnswers += numberOfIncorrectAnswer;
             await _userManager.UpdateAsync(user);
 
+            if(oldRank.Id != newRank.Id)
+            {
+                await _rankService.InsertRankHistoryAsync(new UserRankHistory()
+                {
+                    ChangedAt = DateTime.Now,
+                    NewRankId = newRank.Id,
+                    OldRankId = oldRank.Id,
+                    UserId = user.Id
+                });
+            }
+
             return new GameResultDTO()
             {
                 NumberOfCorrectAnswers = numberOfCorrectAnswer,

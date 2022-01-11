@@ -45,6 +45,8 @@ namespace ValQ.Data.Context
 
         public DbSet<Rank> Rank { get; set; }
 
+        public DbSet<UserRankHistory> UserRankHistory { get; set; }
+
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {

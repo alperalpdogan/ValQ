@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ValQ.API.Framework.Models;
 using ValQ.API.Model.Request;
 using ValQ.API.Model.Response;
 using ValQ.Core;
@@ -54,16 +55,22 @@ namespace ValQ.API.Controllers
 
         [HttpGet]
         [Route("matchHistory")]
+        [ProducesResponseType(typeof(PagedResult<MatchHistoryLine>), 200)]
         public async Task<IActionResult> MatchHistory([FromQuery] PagedRequest request) 
         {
             var user = await _workContext.GetCurrentUserAsync();
             var matchHistories = await _matchService.GetMatchHistoryForUser(user.Id, request.PageNumber, request.PageSize);
 
-            var matchHistoryLines = new List<MatchHistoryLine>();
-
-            foreach(var match in matchHistories)
+            var matchHistoryLines = new PagedResult<MatchHistoryLine>()
             {
-                matchHistoryLines.Add(new MatchHistoryLine()
+                CurrentPage = matchHistories.PageIndex,
+                TotalCount = matchHistories.TotalCount,
+                TotalPages = matchHistories.TotalPages
+            };
+
+            foreach (var match in matchHistories)
+            {
+                matchHistoryLines.Data.Add(new MatchHistoryLine()
                 {
                     NumberOfCorrectAnswers = match.NumberOfCorrectAnswers,
                     NumberOfIncorrectAnswers = match.NumberOfIncorrectAnswers,
@@ -75,9 +82,42 @@ namespace ValQ.API.Controllers
             return Ok(matchHistoryLines);
         }
 
+
+        [HttpGet]
+        [Route("rankHistory")]
+        [ProducesResponseType(typeof(PagedResult<RankHistory>), 200)]
         public async Task<IActionResult> RankHistory([FromQuery] PagedRequest request)
         {
+            var histories = await _rankService.GetRankHistoryAsync(request.PageNumber, request.PageSize);
 
+            var model = new PagedResult<RankHistory>()
+            {
+                CurrentPage = histories.PageIndex,
+                TotalCount = histories.TotalCount,
+                TotalPages = histories.TotalPages
+            };
+
+            foreach(var history in histories)
+            {
+                var oldRank = await _rankService.GetRankByIdAsync(history.OldRankId);
+                var newRank = await _rankService.GetRankByIdAsync(history.NewRankId);
+                model.Data.Add(new RankHistory()
+                {
+                    ChangedAt = history.ChangedAt,
+                    NewRank = new Rank()
+                    {
+                        Name = newRank.Name,
+                        URL = newRank.PictureURL
+                    },
+                    OldRank = new Rank()
+                    {
+                        Name = oldRank.Name,
+                        URL = oldRank.PictureURL
+                    }
+                });
+            }
+
+            return Ok(model);
         }
     }
 }
